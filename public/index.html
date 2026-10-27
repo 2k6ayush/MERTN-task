@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="CRUD Operations on Items using HTML, CSS, Express.js and REST API – a college assignment demonstrating Create, Read, Update and Delete operations on an in-memory array via a Node.js backend." />
+  <title>CRUD Operations on Items</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="container">
+
+    <!-- ── Page heading ──────────────────────────────────────────── -->
+    <h1>CRUD Operations on Items</h1>
+
+    <!-- ── Status message ───────────────────────────────────────── -->
+    <div id="status-message" class="message hidden" role="alert" aria-live="polite"></div>
+
+    <!-- ── Add / Edit Form ──────────────────────────────────────── -->
+    <section class="form-section" aria-label="Item Form">
+      <h2 id="form-title">Add New Item</h2>
+
+      <form id="item-form" novalidate>
+        <!-- Hidden field that stores the ID of the item being edited -->
+        <input type="hidden" id="edit-id" value="" />
+
+        <div class="form-group">
+          <label for="item-name">Name <span class="required">*</span></label>
+          <input
+            type="text"
+            id="item-name"
+            name="item-name"
+            placeholder="Enter item name"
+            required
+            autocomplete="off"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="item-price">Price (₹) <span class="required">*</span></label>
+          <input
+            type="number"
+            id="item-price"
+            name="item-price"
+            placeholder="Enter price"
+            min="0"
+            step="0.01"
+            required
+          />
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" id="submit-btn" class="btn btn-green">Submit</button>
+          <button type="button" id="cancel-btn" class="btn btn-grey hidden">Cancel</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- ── Items table ───────────────────────────────────────────── -->
+    <section class="table-section" aria-label="Items Table">
+      <h2>Items List</h2>
+
+      <div class="table-wrapper">
+        <table id="items-table" aria-label="CRUD items table">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Name</th>
+              <th scope="col">Price (₹)</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody id="items-tbody">
+            <!-- Rows are injected dynamically by app.js -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </div><!-- /.container -->
+
+  <script src="app.js"></script>
+</body>
+</html>
