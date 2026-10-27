@@ -1,0 +1,327 @@
+/* ================================================================
+   Task 2 – styles.css
+   Simple, clean Sign-Up style with red accents.
+   White background, centered card, underline inputs.
+================================================================ */
+
+/* ── Import font ──────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* ── Reset ────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── Base ─────────────────────────────────────────────────────── */
+body {
+  font-family : 'Inter', system-ui, sans-serif;
+  background  : #ffffff;
+  color       : #1a1a1a;
+  min-height  : 100vh;
+  display     : flex;
+  align-items : center;
+  justify-content: center;
+  padding     : 20px 16px;
+}
+
+/* ── Auth Screen (sign-up / log-in wrapper) ───────────────────── */
+.auth-screen {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ── Auth Card ────────────────────────────────────────────────── */
+.auth-card {
+  width      : 100%;
+  max-width  : 400px;
+  padding    : 0 8px;
+}
+
+/* ── Titles ───────────────────────────────────────────────────── */
+.auth-title {
+  font-size  : 2rem;
+  font-weight: 700;
+  color      : #1a1a1a;
+  margin-bottom: 6px;
+}
+
+.auth-sub {
+  font-size  : 0.95rem;
+  color      : #555;
+  margin-bottom: 32px;
+}
+
+/* ── Links ────────────────────────────────────────────────────── */
+.auth-link {
+  color          : #cc0000;
+  text-decoration: none;
+  font-weight    : 500;
+}
+.auth-link:hover { text-decoration: underline; }
+
+/* ── Field group ──────────────────────────────────────────────── */
+.field-group {
+  display       : flex;
+  flex-direction: column;
+  margin-bottom : 24px;
+}
+
+.field-group label {
+  font-size  : 0.82rem;
+  font-weight: 600;
+  color      : #888;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+
+/* Underline-only input style (matching reference image) */
+.field-group input {
+  border       : none;
+  border-bottom: 2px solid #ddd;
+  padding      : 8px 2px;
+  font-size    : 1rem;
+  font-family  : inherit;
+  color        : #1a1a1a;
+  background   : transparent;
+  outline      : none;
+  transition   : border-color 0.2s;
+  width        : 100%;
+}
+.field-group input:focus { border-bottom-color: #cc0000; }
+
+/* ── Primary button (wide red) ────────────────────────────────── */
+.btn-primary {
+  display    : block;
+  width      : 100%;
+  padding    : 14px;
+  background : #cc0000;
+  color      : #fff;
+  border     : none;
+  border-radius: 6px;
+  font-size  : 1rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor     : pointer;
+  margin-top : 8px;
+  transition : background 0.18s;
+}
+.btn-primary:hover    { background: #aa0000; }
+.btn-primary:disabled { opacity: 0.55; cursor: not-allowed; }
+
+/* ── Status / message banner ──────────────────────────────────── */
+.msg {
+  border-radius: 5px;
+  padding      : 10px 14px;
+  font-size    : 0.9rem;
+  font-weight  : 500;
+  margin-bottom: 18px;
+}
+.msg.success { background: #fde8e8; color: #7a0000; border: 1px solid #f5b0b0; }
+.msg.error   { background: #fff0f0; color: #990000; border: 1px solid #ffc0c0; }
+.hidden      { display: none !important; }
+
+/* ================================================================
+   DASHBOARD
+================================================================ */
+.dashboard {
+  width      : 100%;
+  max-width  : 860px;
+  padding    : 24px 20px 48px;
+}
+
+.dash-header {
+  display        : flex;
+  justify-content: space-between;
+  align-items    : center;
+  margin-bottom  : 20px;
+}
+
+.dash-title {
+  font-size  : 1.5rem;
+  font-weight: 700;
+}
+
+/* Outline button (Sign Out) */
+.btn-outline {
+  padding    : 7px 18px;
+  border     : 2px solid #cc0000;
+  background : #fff;
+  color      : #cc0000;
+  border-radius: 5px;
+  font-size  : 0.88rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor     : pointer;
+  transition : background 0.18s, color 0.18s;
+}
+.btn-outline:hover { background: #cc0000; color: #fff; }
+
+/* ── Edit panel ───────────────────────────────────────────────── */
+.edit-panel {
+  background   : #fff8f8;
+  border       : 1px solid #f5b0b0;
+  border-radius: 8px;
+  padding      : 20px 24px;
+  margin-bottom: 24px;
+}
+.edit-panel h3 { font-size: 1.05rem; margin-bottom: 14px; color: #cc0000; }
+
+.optional { font-size: 0.78rem; color: #999; font-weight: 400; text-transform: none; letter-spacing: 0; }
+
+.btn-row { display: flex; gap: 10px; margin-top: 6px; }
+
+/* Cancel button */
+.btn-cancel {
+  padding    : 10px 22px;
+  background : #e5e5e5;
+  color      : #333;
+  border     : none;
+  border-radius: 5px;
+  font-size  : 0.9rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor     : pointer;
+  transition : background 0.18s;
+}
+.btn-cancel:hover { background: #ccc; }
+
+/* ── Table ────────────────────────────────────────────────────── */
+.table-wrap { overflow-x: auto; }
+
+#users-table {
+  width          : 100%;
+  border-collapse: collapse;
+  font-size      : 0.93rem;
+}
+
+#users-table thead {
+  background: #1a1a1a;
+  color     : #fff;
+}
+#users-table thead th {
+  padding    : 12px 14px;
+  text-align : left;
+  font-weight: 600;
+}
+
+#users-table tbody tr {
+  border-bottom: 1px solid #eee;
+  transition   : background 0.15s;
+}
+#users-table tbody tr:hover { background: #fff0f0; }
+#users-table tbody td {
+  padding: 10px 14px;
+  vertical-align: middle;
+}
+
+/* Action cell */
+#users-table tbody td:last-child {
+  white-space: nowrap;
+  display    : flex;
+  gap        : 8px;
+  align-items: center;
+  padding-top: 7px;
+  padding-bottom: 7px;
+}
+
+/* Small table buttons */
+.btn-edit {
+  padding    : 5px 14px;
+  background : #1a1a1a;
+  color      : #fff;
+  border     : none;
+  border-radius: 4px;
+  font-size  : 0.8rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor     : pointer;
+  transition : background 0.18s;
+}
+.btn-edit:hover { background: #444; }
+
+.btn-delete {
+  padding    : 5px 14px;
+  background : #cc0000;
+  color      : #fff;
+  border     : none;
+  border-radius: 4px;
+  font-size  : 0.8rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor     : pointer;
+  transition : background 0.18s;
+}
+.btn-delete:hover { background: #aa0000; }
+
+/* Empty row */
+.empty-row td {
+  text-align : center;
+  padding    : 24px !important;
+  color      : #999;
+  font-style : italic;
+}
+
+/* ── Delete Confirmation Modal ───────────────────────────────── */
+.modal-overlay {
+  position       : fixed;
+  top            : 0;
+  left           : 0;
+  width          : 100vw;
+  height         : 100vh;
+  background     : rgba(0, 0, 0, 0.45);
+  display        : flex;
+  align-items    : center;
+  justify-content: center;
+  z-index        : 1000;
+  padding        : 16px;
+}
+
+.modal-card {
+  background     : #ffffff;
+  border-radius  : 8px;
+  box-shadow     : 0 10px 30px rgba(0, 0, 0, 0.2);
+  width          : 100%;
+  max-width      : 420px;
+  padding        : 28px 24px;
+  text-align     : center;
+}
+
+.modal-card h3 {
+  font-size      : 1.25rem;
+  font-weight    : 700;
+  color          : #1a1a1a;
+  margin-bottom  : 10px;
+}
+
+.modal-card p {
+  font-size      : 0.95rem;
+  color          : #555;
+  margin-bottom  : 22px;
+  line-height    : 1.5;
+}
+
+.modal-actions {
+  display        : flex;
+  justify-content: center;
+  gap            : 12px;
+}
+
+.modal-actions .btn-delete {
+  padding        : 9px 24px;
+  font-size      : 0.9rem;
+  border-radius  : 5px;
+}
+
+.modal-actions .btn-cancel {
+  padding        : 9px 24px;
+  font-size      : 0.9rem;
+}
+
+/* ── Responsive ───────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .auth-title { font-size: 1.6rem; }
+  .dash-header { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .btn-row { flex-direction: column; }
+  .btn-row .btn-primary, .btn-row .btn-cancel { width: 100%; }
+}

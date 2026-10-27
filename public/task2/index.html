@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Task 2 – Sign Up and User CRUD Operations using Express.js REST API." />
+  <title>Sign Up – Task 2</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       AUTH SCREENS  (sign-up / log-in)
+       Only one is shown at a time; JS toggles the .hidden class.
+  ═══════════════════════════════════════════════════════════════ -->
+
+  <!-- Sign-Up screen -->
+  <div id="screen-signup" class="auth-screen">
+    <div class="auth-card">
+      <h1 class="auth-title">Sign Up</h1>
+      <p class="auth-sub">Already a member? <a id="go-login" href="#" class="auth-link">Log In</a></p>
+
+      <div id="signup-msg" class="msg hidden" role="alert"></div>
+
+      <form id="signup-form" novalidate>
+        <div class="field-group">
+          <label for="su-email">Email</label>
+          <input type="email" id="su-email" placeholder="you@example.com" autocomplete="email" />
+        </div>
+        <div class="field-group">
+          <label for="su-password">Password</label>
+          <input type="password" id="su-password" placeholder="Min 6 characters" autocomplete="new-password" />
+        </div>
+        <button type="submit" class="btn-primary" id="su-btn">Sign Up</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Log-In screen -->
+  <div id="screen-login" class="auth-screen hidden">
+    <div class="auth-card">
+      <h1 class="auth-title">Log In</h1>
+      <p class="auth-sub">Don't have an account? <a id="go-signup" href="#" class="auth-link">Sign Up</a></p>
+
+      <div id="login-msg" class="msg hidden" role="alert"></div>
+
+      <form id="login-form" novalidate>
+        <div class="field-group">
+          <label for="li-email">Email</label>
+          <input type="email" id="li-email" placeholder="you@example.com" autocomplete="email" />
+        </div>
+        <div class="field-group">
+          <label for="li-password">Password</label>
+          <input type="password" id="li-password" placeholder="Your password" autocomplete="current-password" />
+        </div>
+        <button type="submit" class="btn-primary" id="li-btn">Log In</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       DASHBOARD  (user management table – shown after sign-up / login)
+  ═══════════════════════════════════════════════════════════════ -->
+  <div id="screen-dashboard" class="dashboard hidden">
+    <div class="dash-header">
+      <h2 class="dash-title">User Management</h2>
+      <button id="logout-btn" class="btn-outline">Sign Out</button>
+    </div>
+
+    <div id="dash-msg" class="msg hidden" role="alert"></div>
+
+    <!-- ── Edit form (hidden until Edit is clicked) ── -->
+    <div id="edit-panel" class="edit-panel hidden">
+      <h3>Edit User</h3>
+      <form id="edit-form" novalidate>
+        <input type="hidden" id="edit-id" />
+        <div class="field-group">
+          <label for="edit-email">Email</label>
+          <input type="email" id="edit-email" placeholder="new@example.com" />
+        </div>
+        <div class="field-group">
+          <label for="edit-password">New Password <span class="optional">(leave blank to keep current)</span></label>
+          <input type="password" id="edit-password" placeholder="Leave blank to keep current" />
+        </div>
+        <div class="btn-row">
+          <button type="submit" class="btn-primary" id="edit-save-btn">Save</button>
+          <button type="button" class="btn-cancel" id="edit-cancel-btn">Cancel</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- ── Users table ── -->
+    <div class="table-wrap">
+      <table id="users-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Email</th>
+            <th>Password</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="users-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── Delete Confirmation Modal ── -->
+  <div id="delete-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-card">
+      <h3 id="modal-title">Confirm Deletion</h3>
+      <p id="modal-text">Are you sure you want to delete this user?</p>
+      <div class="modal-actions">
+        <button id="modal-confirm-btn" class="btn-delete">Delete</button>
+        <button id="modal-cancel-btn" class="btn-cancel">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

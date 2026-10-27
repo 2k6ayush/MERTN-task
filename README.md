@@ -85,8 +85,6 @@ MERTN task/
 │   ├── update-item.png
 │   ├── delete-confirmation.png
 │   └── final-output.png
-├── tests/
-│   └── api.test.js         ← Automated API tests
 ├── server.js               ← Express server + REST API
 ├── package.json
 ├── package-lock.json
@@ -345,3 +343,275 @@ This project demonstrates a complete CRUD web application built with Node.js, Ex
 ---
 
 *Submitted as part of the Web Technologies practical assignment.*
+
+---
+---
+
+# Task 2 — Sign Up and User CRUD Operations
+
+> **College Lab Assignment – Task 2** | User Management & Authentication Interface
+
+---
+
+## Assignment Aim
+
+To design and implement a clean, responsive frontend and RESTful Express.js backend for managing user accounts stored in an in-memory JavaScript array. The interface is inspired by a minimalist Sign Up design featuring a white background, underline input fields, and bold red action accents.
+
+---
+
+## Objectives
+
+- Build a clean Sign Up and Log In interface adhering to the specified visual style (white background, red buttons and links, underline input fields).
+- Implement full CRUD (Create, Read, Update, Delete) functionality for user accounts via REST API.
+- Maintain separate, isolated endpoints and in-memory data storage for Task 2 under `/api/task2/users`.
+- Ensure robust validation on both frontend and backend (valid email format, minimum 6-character passwords, duplicate email prevention).
+- Display a masked password representation (`••••••••`) in the management table and never expose actual passwords in API responses.
+- Implement an accessible deletion confirmation dialog with red action and neutral cancel buttons.
+- Write automated unit and integration tests using Node.js built-in `node:test` runner.
+- Capture real browser screenshots of the running application using Playwright.
+
+---
+
+## Technologies Used
+
+| Category | Technology |
+|---|---|
+| **Runtime** | Node.js (v18+) |
+| **Backend Framework** | Express.js 4.x |
+| **Frontend** | Vanilla HTML5, CSS3, JavaScript (ES6+) |
+| **Architecture** | REST API (JSON over HTTP) |
+| **HTTP Client** | Browser `fetch()` API |
+| **Data Store** | In-memory JavaScript array (`users`) |
+| **Testing** | Node.js `node:test` and `node:assert` |
+| **Automation** | Playwright (browser screenshots) |
+
+---
+
+## Project Structure
+
+```
+MERTN task/
+├── public/
+│   ├── index.html              ← Task 1 frontend (Items CRUD)
+│   ├── styles.css              ← Task 1 styles
+│   ├── app.js                  ← Task 1 client logic
+│   └── task2/
+│       ├── index.html          ← Task 2 frontend (Sign Up, Log In, Dashboard)
+│       ├── styles.css          ← Task 2 styles (red theme, underline inputs)
+│       └── app.js              ← Task 2 client logic (Users CRUD & modal)
+├── screenshots/
+│   ├── initial-output.png      ← Task 1 screenshot
+│   ├── add-item.png            ← Task 1 screenshot
+│   ├── edit-item.png           ← Task 1 screenshot
+│   ├── update-item.png         ← Task 1 screenshot
+│   ├── delete-confirmation.png ← Task 1 screenshot
+│   ├── final-output.png        ← Task 1 screenshot
+│   └── task2/
+│       ├── signup-page.png         ← Initial Sign Up screen
+│       ├── login-page.png          ← Log In screen
+│       ├── signup-success.png      ← Registration success notification
+│       ├── users-list.png          ← User management table with dummy users
+│       ├── edit-user.png           ← Pre-populated user edit panel
+│       ├── delete-confirmation.png ← Delete confirmation modal
+│       └── after-delete.png        ← Table after user deletion
+├── tests/
+│   └── api.test.js             ← Automated test suite for Task 1 and Task 2
+├── server.js                   ← Express server handling Task 1 and Task 2 APIs
+├── take-screenshots.js         ← Automated Playwright screenshot script
+├── package.json
+└── README.md
+```
+
+---
+
+## How the Application Works
+
+1. **Initial Load**:
+   - Navigating to `http://localhost:3000/task2` opens the Sign Up form.
+   - The user can switch between the **Sign Up** and **Log In** forms via the header links.
+2. **Registration (Create)**:
+   - Entering an email and a password (min 6 characters) and submitting sends a `POST` request to `/api/task2/users`.
+   - On success, a confirmation message appears and the user transitions into the User Management Dashboard.
+3. **Log In**:
+   - Submitting existing credentials sends a `POST` request to `/api/task2/users/login`.
+   - On verification, the user enters the User Management Dashboard.
+4. **User Management Dashboard (Read)**:
+   - A `GET` request retrieves all registered users from `/api/task2/users`.
+   - The table displays the user ID, email address, masked password indicator (`••••••••`), and Edit / Delete action buttons.
+5. **Editing Users (Update)**:
+   - Clicking **Edit** opens the edit panel with the selected user's email pre-filled.
+   - The user can update the email and optionally enter a new password.
+   - Submitting triggers a `PUT` request to `/api/task2/users/:id`, refreshing the table.
+   - A neutral **Cancel** button dismisses the edit panel without changes.
+6. **Deleting Users (Delete)**:
+   - Clicking **Delete** opens a custom confirmation modal asking for confirmation.
+   - Clicking **Delete** inside the modal issues a `DELETE` request to `/api/task2/users/:id`.
+   - The user is removed from the array and the table refreshes immediately.
+
+---
+
+## CRUD Operations Explanation
+
+| Operation | HTTP Method | Endpoint | Description |
+|---|---|---|---|
+| **Create** | `POST` | `/api/task2/users` | Register a new user with email and password |
+| **Authenticate** | `POST` | `/api/task2/users/login` | Verify credentials for account login |
+| **Read All** | `GET` | `/api/task2/users` | Fetch all users (passwords excluded) |
+| **Read One** | `GET` | `/api/task2/users/:id` | Fetch a single user by numeric ID |
+| **Update** | `PUT` | `/api/task2/users/:id` | Update email and/or password of a user |
+| **Delete** | `DELETE` | `/api/task2/users/:id` | Remove a user record from the array |
+
+---
+
+## REST API Endpoints
+
+| Method | Endpoint | Request Body | Success Code | Error Codes | Description |
+|---|---|---|:---:|:---:|---|
+| `GET` | `/api/task2/users` | None | `200 OK` | `500` | Returns array of safe user objects (`id`, `email`) |
+| `GET` | `/api/task2/users/:id` | None | `200 OK` | `404` | Returns single user object (`id`, `email`) |
+| `POST` | `/api/task2/users` | `{ "email": "...", "password": "..." }` | `201 Created` | `400`, `409` | Creates new user; rejects invalid fields or duplicates |
+| `POST` | `/api/task2/users/login` | `{ "email": "...", "password": "..." }` | `200 OK` | `400`, `401` | Authenticates user; returns status message and email |
+| `PUT` | `/api/task2/users/:id` | `{ "email": "...", "password": "..." }` | `200 OK` | `400`, `404`, `409` | Updates email and optional password; rejects conflicts |
+| `DELETE` | `/api/task2/users/:id` | None | `200 OK` | `404` | Deletes user from the store |
+
+---
+
+## Installation and Run Instructions
+
+### 1. Install Dependencies
+```bash
+npm install
+```
+
+### 2. Start the Server
+```bash
+npm start
+```
+The server will start on port 3000:
+- **Task 1 (Items CRUD)**: [http://localhost:3000/](http://localhost:3000/)
+- **Task 2 (User Management)**: [http://localhost:3000/task2](http://localhost:3000/task2)
+
+### 3. Development Mode (with auto-restart)
+```bash
+npm run dev
+```
+
+---
+
+## Running Automated Tests
+
+Run the full automated test suite (covering both Task 1 and Task 2):
+```bash
+npm test
+```
+
+### Test Results
+```
+TAP version 13
+# Subtest: Task 1: GET /api/items ... ok 1
+# Subtest: Task 1: GET /api/items/:id ... ok 2
+# Subtest: Task 1: POST /api/items ... ok 3
+# Subtest: Task 1: PUT /api/items/:id ... ok 4
+# Subtest: Task 1: DELETE /api/items/:id ... ok 5
+# Subtest: Task 1: Unknown API routes ... ok 6
+# Subtest: Task 1: Malformed JSON handling ... ok 7
+# Subtest: Task 2: GET /api/task2/users ... ok 8
+# Subtest: Task 2: GET /api/task2/users/:id ... ok 9
+# Subtest: Task 2: POST /api/task2/users ... ok 10
+# Subtest: Task 2: POST /api/task2/users/login ... ok 11
+# Subtest: Task 2: PUT /api/task2/users/:id ... ok 12
+# Subtest: Task 2: DELETE /api/task2/users/:id ... ok 13
+1..13
+# tests 34
+# suites 13
+# pass 34
+# fail 0
+```
+
+---
+
+## Capturing Real Application Screenshots
+
+Run Playwright automation to generate real browser screenshots:
+```bash
+npm run screenshots
+```
+
+---
+
+## Sample Dummy Data
+
+The application starts with the following default in-memory user records:
+
+```json
+[
+  { "id": 1, "email": "alice@example.com", "password": "password123" },
+  { "id": 2, "email": "bob@example.com",   "password": "password123" }
+]
+```
+
+*Note: Passwords are used solely for credential verification in this educational demonstration and are never returned by any API endpoint.*
+
+---
+
+## Application Screenshots (Task 2)
+
+### 1. Sign Up Page
+![Sign Up Page](screenshots/task2/signup-page.png)
+*Initial clean Sign Up interface featuring a centered card on a white background, red accent button, and underline inputs.*
+
+---
+
+### 2. Log In Page
+![Log In Page](screenshots/task2/login-page.png)
+*Log In screen accessible via the "Already a member? Log In" link.*
+
+---
+
+### 3. Registration Success
+![Registration Success](screenshots/task2/signup-success.png)
+*Successful registration message displayed upon submitting valid user credentials.*
+
+---
+
+### 4. User Management Dashboard
+![User Management Table](screenshots/task2/users-list.png)
+*Dashboard table listing registered users with numeric IDs, email addresses, masked passwords, and Edit/Delete action buttons.*
+
+---
+
+### 5. Edit User Form
+![Edit User Form](screenshots/task2/edit-user.png)
+*Edit panel displaying the selected user's email, optional password update field, red Save button, and neutral Cancel button.*
+
+---
+
+### 6. Delete Confirmation Dialog
+![Delete Confirmation Dialog](screenshots/task2/delete-confirmation.png)
+*Confirmation modal dialog preventing accidental user deletion with red Delete and neutral Cancel buttons.*
+
+---
+
+### 7. After Deletion
+![After Deletion](screenshots/task2/after-delete.png)
+*Dashboard showing success alert banner after deleting a user record and reflecting the updated table state.*
+
+---
+
+## Educational Security Limitations
+
+> [!WARNING]
+> This application is built strictly as a **college educational assignment** demonstrating array-based CRUD operations in Express.js. It is **not** a production-ready authentication or identity management system.
+
+1. **In-Memory Storage**: All data is stored in memory and resets whenever the server process restarts.
+2. **Password Storage in Demo**: For simplicity in viva demonstrations, dummy passwords are kept in memory without external database hashing dependencies. Real applications must use cryptographic hashing (e.g., bcrypt or argon2) with salts.
+3. **No Session Tokens / JWT**: The application relies on client-side state for switching screens. A production system requires stateless JWT or secure HTTP-only cookie sessions.
+4. **Data Isolation**: Passwords are never sent back in any GET, POST, or PUT response payload.
+5. **No Production Credentials**: Only fictional test credentials (e.g., `alice@example.com`, `bob@example.com`) should ever be entered.
+
+---
+
+## Conclusion
+
+Task 2 expands upon the foundation of Task 1 by introducing user management workflows, multi-screen navigation, client-side validation, and secure API practices (such as masking sensitive fields and isolating task routes). Built cleanly using vanilla HTML, CSS, JavaScript, and Node.js/Express.js without heavy frameworks, it remains easy to explain in a practical examination or viva while demonstrating core software development best practices.
+
